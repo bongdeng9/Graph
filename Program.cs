@@ -36,7 +36,7 @@ namespace Excercise
 
             // 1) 우선 now 부터 방문하고,
             // 2) now 와 연결된 정점들을 하나씩 확인해서, [아직 미방문 상태라면] 방문한다.
-            bool[] visited = new bool[6];
+            bool[] visited = new bool[6]; // DFS 함수들이 어디서든 접근할 수 있도록 공용 공간을 만듦. DFS() 인자 파라미터로 넘기기 귀찮으면 이렇게..
             public void DFS(int now)
             {
                 Console.WriteLine(now);
