@@ -8,53 +8,98 @@ namespace Excercise
 {
     class Program
     {
-        // 스택 : LIFO (Last In First Out) 후입선출
-        // 큐 : FIFO (First In First Out) 선입선출
-        // 동적 배열 / 연결리스트처럼 중간에 있는 놈은 나갈 수 없음
-        // 스택과 큐를 만든 이유 : 추상적으로 사용할 때 편함.
-        // 의사소통 / 정신건강에 좋음.
-        // 기존에 배운 연결리스트 동적배열의 축소판.
-        // 큐는 순환 버퍼를 사용해서 만든다.
-        // 배열 동적배열을 사용해서 관리하는 건 맞음
-        // 근데 실제로 이사를 시키는 게 아니라 시작 되는 지점을 추적하는데,
-        // 그냥 시작되는 지점을 한칸 옮겨서 2번부터 시작하는 느낌적인 느낌
-        // 자세한건 구글에 있습니다.
-
-        static void Main(string[] args)
+        class Graph
         {
+            // 2차원 배열 or 리스트
 
-            // 스택 : 
-            // 팝업창 ! 
-            // 중첩되서 팝업이 뜰 때, 후입선출 개념.
-            // 마지막으로 띄운 ui 가 먼저 꺼져야됨.
-            
-            // 큐 : 네트워크 패킷을 보낼 때
-            // 이용자가 옆에 있는 몬스터를 때리고 싶다고 서버에 요청
-            // 수만명의 유저가 동시에 보내면,
-            // 동시에 실행하기 어려울 때
-            // 줄을 세워서 순차적으로 실행.
-            // 이때 큐가 유용함.
-            Stack<int> stack = new Stack<int>();
-            Queue<int> queue = new Queue<int>();
+            // 행렬버전
+            int[,] adj = new int[6, 6]
+            {
+                { 0, 1, 0, 1, 0, 0 },
+                { 1, 0, 1, 1, 0, 0 },
+                { 0, 1, 0, 0, 0, 0 },
+                { 1, 1, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 1 },
+                { 0, 0, 0, 0, 1, 0 },
+            };
 
-            stack.Push(101);
-            stack.Push(102);
-            stack.Push(103);
-            stack.Push(104);
-            stack.Push(105);
+            // 리스트버전
+            List<int>[] adj2 = new List<int>[]
+            {
+                new List<int>() { 1, 3},
+                new List<int>() { 0, 2, 3},
+                new List<int>() { 1},
+                new List<int>() { 0, 1},
+                new List<int>() { 5},
+                new List<int>() { 4},
+            };
 
-            int data = stack.Pop();
-            int data2 = stack.Peek();
+            // 1) 우선 now 부터 방문하고,
+            // 2) now 와 연결된 정점들을 하나씩 확인해서, [아직 미방문 상태라면] 방문한다.
+            bool[] visited = new bool[6];
+            public void DFS(int now)
+            {
+                Console.WriteLine(now);
+                visited[now] = true;
 
-            queue.Enqueue(101);
-            queue.Enqueue(102);
-            queue.Enqueue(103);
-            queue.Enqueue(104);
-            queue.Enqueue(105);
+                for (int next = 0; next < adj.GetLength(0); next++)
+                {
+                    if (adj[now, next] == 0) // 연결 되어 있지 않으면 스킵
+                        continue;
+                    if (visited[next]) // 이미 방문했으면 스킵
+                        continue;
+                    DFS(next);
+                    // now 클리어 표시 visited
+                    // next 다음 정점을 기준으로 같은 행동을 반복한다.
+                    // 오케이 찍고 타고 다음거로 간다. 이 행동이 반복됨.
+                    // 재귀함수 사용
 
-            int data3 = queue.Dequeue();
-            int data4 = queue.Peek();
+                }
+            }
+            public void DFS2(int now)
+            {
+                Console.WriteLine(now);
+                visited[now] = true;
 
+                foreach(int next in adj2[now]) // 애초에 연결된 놈들만 배열들이 리스트에 담겨있음 DFS 에서랑은 다르게 DFS2 는 연결되어 있는지 체크 안해도 됨.
+                {
+                    if (visited[next]) // 이미 방문했으면 스킵
+                        continue;
+                    DFS2(next);
+                }
+            }
+
+            public void SearchAll() // edge가 끊겨있어도 모든 노드 서치하는 함수
+            {
+                visited = new bool[6];
+                for (int now = 0; now < 6; now++)
+                    if (visited[now] == false)
+                        DFS(now); // DFS를 한번 실행 하는 순간, 끊기기전 부분은 모두 TRUE로 바뀜
+            }
         }
+
+            static void Main(string[] args)
+            {
+                // 그래프의 기준? 
+                // 그래프를 순회하는 방법 1. DFS(깊이 우선 탐색) 
+                //                        2. BFS(너비 우선 탐색)
+
+                // 던전을 생각한다.
+
+                // DFS 는 무모한 용사 보이는 대로 무조건 들어감.
+                // 최종보스까지 달려감. 
+                // 더이상 갈 곳이 없으면 되돌아감.
+                // 왔던 길을 계속 돌아가다가 안 가봤던 길을 발견하면 거기로 간다.
+                // 똑같은 로직으로 안 가본 곳까지 간다.
+
+                 Graph graph = new Graph();
+                 graph.SearchAll();
+
+
+
+            }
+
+
+        
     }
 }
