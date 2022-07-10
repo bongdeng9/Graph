@@ -26,6 +26,20 @@
  인접한 노드들중, 방문하지 않았던 노드들을 예약해놓는다.
  가장 먼저 예약한 노드를 방문한다.(now)
  
+ # BFS를 이용한  길찾기 구현 
+ 순서 : program.cs 에서 player.initialize() 시작 ->  시작점, board 매개변수를 넘기고, BFS() 시작
+ parent 배열로 어디에서 왔는 지 알 수 있게 부모 배열을 만든다.
+ parent 배열에 전에 있던 좌표를 넣음. <br/>
+ 1 try : y, x = (DestY, DestX) <br/>
+ 2 try : y, x = parent[y, x].Y, parent[y, x].X <br/>
+ .<br/>
+ .<br/>
+ .<br/>
+ .<br/>
+ last try : y, x == parent[y, x].Y, parent[y, x].X (부모 좌표와 자식 좌표가 일치할 때 종료 엄밀히 말하자면 그 전에 종료) while 문 빠져 나간다음 
+ 넣어줌.
+ 
+ 
  
 <img width="602" alt="graph1" src="https://user-images.githubusercontent.com/80138709/177958893-b0325a1a-5375-43d4-ab4e-21a880458b58.png">
 <img width="602" alt="graph2" src="https://user-images.githubusercontent.com/80138709/177958903-7a91b0fa-f04e-4da6-b95a-e5b2d1d0d3ce.png">
